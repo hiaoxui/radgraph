@@ -1,0 +1,59 @@
+{
+  "0": {
+    "text": "no evidence of acute cardiopulmonary process moderate hiatal hernia",
+    "entities": {
+      "1": {
+        "tokens": "acute",
+        "label": "Observation::definitely absent",
+        "start_ix": 3,
+        "end_ix": 3,
+        "relations": [
+          [
+            "modify",
+            "3"
+          ]
+        ]
+      },
+      "2": {
+        "tokens": "cardiopulmonary",
+        "label": "Anatomy::definitely present",
+        "start_ix": 4,
+        "end_ix": 4,
+        "relations": []
+      },
+      "3": {
+        "tokens": "process",
+        "label": "Observation::definitely absent",
+        "start_ix": 5,
+        "end_ix": 5,
+        "relations": [
+          [
+            "located_at",
+            "2"
+          ]
+        ]
+      },
+      "4": {
+        "tokens": "moderate",
+        "label": "Observation::definitely present",
+        "start_ix": 6,
+        "end_ix": 6,
+        "relations": [
+          [
+            "modify",
+            "5"
+          ]
+        ]
+      },
+      "5": {
+        "tokens": "hiatal hernia",
+        "label": "Observation::definitely present",
+        "start_ix": 7,
+        "end_ix": 8,
+        "relations": []
+      }
+    },
+    "data_source": null,
+    "data_split": "inference"
+  }
+}
