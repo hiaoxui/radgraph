@@ -74,28 +74,20 @@ class RadGraph(nn.Module):
         if temp_dir is None:
             temp_dir = CACHE_DIR
 
-        # Gettting model archive path
-        if model_type == "echograph":
-            self.model_archive = "./echograph.tar.gz"
-        else:
-            self.model_archive = os.path.join(temp_dir, MODEL_MAPPING[model_type])
+        model_dir = os.path.join(temp_dir, model_type)
 
-        # If model archive doesnt exist, download it
-        try:
-            if not os.path.exists(self.model_archive):
-                download_model(
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+            try:
+                archive_path = download_model(
                     repo_id="StanfordAIMI/RRG_scorers",
                     cache_dir=temp_dir,
                     filename=MODEL_MAPPING[model_type],
                 )
-        except Exception as e:
-            print("Model download error", e)
+            except Exception as e:
+                raise Exception(e)
 
-        model_dir = os.path.join(temp_dir, model_type)
-
-        # Extract archive model_dir doesnt exist
-        if not os.path.exists(model_dir):
-            with tarfile.open(self.model_archive, "r:gz") as tar:
+            with tarfile.open(archive_path, "r:gz") as tar:
                 tar.extractall(path=model_dir)
 
         # Read config.
@@ -268,11 +260,11 @@ class F1RadGraph(nn.Module):
 
 
 if __name__ == "__main__":
-    model_type = "echograph"
-    radgraph = RadGraph(model_type=model_type)
-    annotations = radgraph(["no evidence of acute cardiopulmonary process moderate hiatal hernia"])
-    print(json.dumps(annotations, indent=4))
-    sys.exit()
+    # model_type = "echograph"
+    # radgraph = RadGraph(model_type=model_type)
+    # annotations = radgraph(["no evidence of acute cardiopulmonary process moderate hiatal hernia"])
+    # print(json.dumps(annotations, indent=4))
+    # sys.exit()
 
     model_type = "radgraph-xl"
     radgraph = RadGraph(model_type=model_type)

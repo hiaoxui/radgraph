@@ -18,23 +18,17 @@ def batch_to_device(inp, device):
         return inp
 
 
-def download_model(repo_id, cache_dir, filename=None):
+def download_model(repo_id, cache_dir, filename):
     # creating cache_dir
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir, exist_ok=True)
 
-    # Single file or whole repo?
-    if filename is not None:
-        files = [filename]
-    else:
-        files = list(set(list_repo_files(repo_id=repo_id)).difference({'README.md', '.gitattributes'}))
-
     # Download
-    for f in files:
-        try:
-            hf_hub_download(repo_id=repo_id, filename=f, cache_dir=cache_dir, force_filename=f)
-        except Exception as e:
-            print(e)
+    try:
+        path = hf_hub_download(repo_id=repo_id, filename=filename, cache_dir=cache_dir)
+    except Exception as e:
+        raise Exception("Cannot download the file {}".format(e))
+    return path
 
 
 def radgraph_xl_preprocess_report(text):
