@@ -35,6 +35,7 @@ logging.getLogger("allennlp").setLevel(logging.CRITICAL)
 MODEL_MAPPING = {
     "radgraph": "radgraph.tar.gz",
     "radgraph-xl": "radgraph-xl.tar.gz",
+    "echograph": "echograph.tar.gz",
 }
 
 version = importlib.metadata.version('radgraph')
@@ -76,8 +77,8 @@ class RadGraph(nn.Module):
 
         model_dir = os.path.join(temp_dir, model_type)
 
-        if not os.path.exists(model_dir):
-            os.makedirs(model_dir)
+        if not os.path.exists(model_dir) or not os.listdir(model_dir):
+            os.makedirs(model_dir, exist_ok=True)
             try:
                 archive_path = download_model(
                     repo_id="StanfordAIMI/RRG_scorers",
