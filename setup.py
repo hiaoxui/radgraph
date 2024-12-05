@@ -15,8 +15,8 @@ setup(
     ],
     python_requires='>=3.8,<3.11',
     install_requires=[
-        'torch==2.3.0',
-        'transformers==4.39.0',
+        'torch>=2.3.0',
+        'transformers>=4.39.0',
         "appdirs",
         'jsonpickle',
         'filelock',
