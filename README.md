@@ -5,7 +5,7 @@ Requirements:
 python_requires='>=3.8,<3.11
 
 ```
-'torch==2.2.1'
+'torch==2.3'
 'transformers==4.39.0'
 "appdirs"
 'jsonpickle'

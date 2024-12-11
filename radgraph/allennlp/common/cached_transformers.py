@@ -1,7 +1,7 @@
 import logging
 from typing import NamedTuple, Optional, Dict, Tuple
 import transformers
-from transformers import AutoModel
+from transformers import AutoModel, AutoConfig
 
 
 logger = logging.getLogger(__name__)
@@ -76,7 +76,8 @@ def get(
 
             transformer = AutoModel.from_pretrained(model_name, state_dict=override_weights)
         else:
-            transformer = AutoModel.from_pretrained(model_name)
+            config = AutoConfig.from_pretrained(model_name)
+            transformer = AutoModel.from_config(config)
         _model_cache[spec] = transformer
     if make_copy:
         import copy

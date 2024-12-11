@@ -1,19 +1,31 @@
-import json
-import re
-import traceback
-import os
-from huggingface_hub import hf_hub_download, list_repo_files
-from nltk.tokenize import wordpunct_tokenize
-import torch
-from collections import defaultdict
 from collections import defaultdict
 
 
-def recursive_modifier(annotations, ind, d):
+# def recursive_modifier(annotations, ind, d):
+#     modifiers = []
+#     if ind in d:
+#         for modifier_index in d[ind]:
+#             modifiers += recursive_modifier(annotations, modifier_index, d)
+#     modifiers.append((annotations[ind]["tokens"], annotations[ind]["label"], annotations[ind]["start_ix"],
+#                       annotations[ind]["end_ix"]))
+#     return modifiers
+
+
+def recursive_modifier(annotations, ind, d, visited=None):
+    if visited is None:
+        visited = set()
+    # If we have already visited this entity, we have a cycle
+    if ind in visited:
+        # Return empty list or break out to avoid infinite recursion
+        return []
+    visited.add(ind)
+
     modifiers = []
+    # If this entity modifies others, recursively gather their modifiers
     if ind in d:
         for modifier_index in d[ind]:
-            modifiers += recursive_modifier(annotations, modifier_index, d)
+            modifiers += recursive_modifier(annotations, modifier_index, d, visited)
+    # Add this entity's annotation
     modifiers.append((annotations[ind]["tokens"], annotations[ind]["label"], annotations[ind]["start_ix"],
                       annotations[ind]["end_ix"]))
     return modifiers
