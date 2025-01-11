@@ -39,8 +39,9 @@ class TokenIndexer(Registrable):
     default_implementation = "single_id"
     has_warned_for_as_padded_tensor = False
 
-    def __init__(self, token_min_padding_length: int = 0) -> None:
+    def __init__(self, token_min_padding_length: int = 0, cache_dir: str = None) -> None:
         self._token_min_padding_length: int = token_min_padding_length
+        self._cache_dir: str = cache_dir
 
     def count_vocab_items(self, token: Token, counter: Dict[str, Dict[str, int]]):
         """
@@ -65,7 +66,7 @@ class TokenIndexer(Registrable):
         raise NotImplementedError
 
     def indices_to_tokens(
-        self, indexed_tokens: IndexedTokenList, vocabulary: Vocabulary
+            self, indexed_tokens: IndexedTokenList, vocabulary: Vocabulary
     ) -> List[Token]:
         """
         Inverse operations of tokens_to_indices. Takes an `IndexedTokenList` and converts it back
@@ -94,7 +95,7 @@ class TokenIndexer(Registrable):
         return padding_lengths
 
     def as_padded_tensor_dict(
-        self, tokens: IndexedTokenList, padding_lengths: Dict[str, int]
+            self, tokens: IndexedTokenList, padding_lengths: Dict[str, int]
     ) -> Dict[str, torch.Tensor]:
         """
         This method pads a list of tokens given the input padding lengths (which could actually

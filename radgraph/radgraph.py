@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import tarfile
+import warnings
 import torch
 import importlib.metadata
 from dotmap import DotMap
@@ -31,6 +32,7 @@ from appdirs import user_cache_dir
 
 logging.getLogger("radgraph").setLevel(logging.CRITICAL)
 logging.getLogger("allennlp").setLevel(logging.CRITICAL)
+warnings.simplefilter("default", category=DeprecationWarning)
 
 MODEL_MAPPING = {
     "radgraph": "radgraph.tar.gz",
@@ -49,7 +51,9 @@ class RadGraph(nn.Module):
             batch_size=1,
             cuda=None,
             model_type=None,
-            temp_dir=None,
+            temp_dir=None,  # Deprecated
+            model_cache_dir=None,  # New variable
+            tokenizer_cache_dir=None,
             **kwargs
     ):
 
@@ -72,17 +76,25 @@ class RadGraph(nn.Module):
 
         assert model_type in ["radgraph", "radgraph-xl", "echograph"]
 
-        if temp_dir is None:
-            temp_dir = CACHE_DIR
+        # Handle temp_dir deprecation
+        if temp_dir is not None:
+            warnings.warn(
+                "'temp_dir' is deprecated and will be removed in future versions. Please use 'model_cache_dir' instead.",
+                DeprecationWarning
+            )
+            model_cache_dir = temp_dir  # Use temp_dir value if provided
 
-        model_dir = os.path.join(temp_dir, model_type)
+        if model_cache_dir is None:
+            model_cache_dir = CACHE_DIR  # Default value
+
+        model_dir = os.path.join(model_cache_dir, model_type)
 
         if not os.path.exists(model_dir) or not os.listdir(model_dir):
             os.makedirs(model_dir, exist_ok=True)
             try:
                 archive_path = download_model(
                     repo_id="StanfordAIMI/RRG_scorers",
-                    cache_dir=temp_dir,
+                    cache_dir=model_cache_dir,
                     filename=MODEL_MAPPING[model_type],
                 )
             except Exception as e:
@@ -107,7 +119,8 @@ class RadGraph(nn.Module):
         tok_indexers = {
             "bert": token_indexers.PretrainedTransformerMismatchedIndexer(
                 model_name=config.dataset_reader.token_indexers.bert.model_name,
-                max_length=config.dataset_reader.token_indexers.bert.max_length
+                max_length=config.dataset_reader.token_indexers.bert.max_length,
+                cache_dir=tokenizer_cache_dir,
             )
         }
         self.reader = DyGIEReader(max_span_width=config.dataset_reader.max_span_width, token_indexers=tok_indexers)
