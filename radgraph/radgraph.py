@@ -59,14 +59,14 @@ class RadGraph(nn.Module):
 
         super().__init__()
         # Device handling. For now we stick to cpu.
+
         if cuda is None:
             cuda = 0 if torch.cuda.is_available() else -1
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        device = "cpu"
-
-        self.cuda = cuda
+        self.device = torch.device(f"cuda:{cuda}" if cuda != -1 else "cpu")
         self.batch_size = batch_size
+
+        print(f"Using device: {self.device}")
 
         if model_type is None:
             print("model_type not provided, defaulting to radgraph-xl")
@@ -143,16 +143,15 @@ class RadGraph(nn.Module):
                             )
 
         model_state_path = os.path.join(model_dir, "weights.th")
-        if device == "cpu":
-            model_state = torch.load(model_state_path, map_location=torch.device('cpu'), weights_only=True)
+        if self.device.type == "cpu":
+            model_state = torch.load(model_state_path, map_location=self.device, weights_only=True)
         else:
             model_state = torch.load(model_state_path)
 
         model.load_state_dict(model_state, strict=True)
         model.eval()
 
-        self.device = device
-        self.model = model.to(device)
+        self.model = model.to(self.device)
 
     def forward(self, hyps):
 
