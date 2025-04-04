@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="radgraph",
-    version="0.1.16",
+    version="0.1.17",
     author="Jean-Benoit Delbrouck",
     license="MIT",
     url="https://github.com/Stanford-AIMI/radgraph",
