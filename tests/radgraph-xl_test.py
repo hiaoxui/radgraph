@@ -26,8 +26,8 @@ def test_1():
                                                                                         'relations': [
                                                                                             ['located_at', '2']]}},
                                                                      'data_source': None, 'data_split': 'inference'}},
-        'start_ix_to_label': {1: 'Observation::definitely absent', 2: 'Anatomy::definitely present',
-                              3: 'Observation::definitely absent'},
+        'start_ix_to_label': {"1": 'Observation::definitely absent', "2": 'Anatomy::definitely present',
+                              "3": 'Observation::definitely absent'},
         'radgraph_text': 'no acute cardiopulmonary abnormality'}
 
 
@@ -58,12 +58,12 @@ def test_2():
                            'relations': []},
                      '6': {'tokens': 'consolidations', 'label': 'Observation::definitely present', 'start_ix': 19,
                            'end_ix': 19, 'relations': [['located_at', '5']]}}, 'data_source': None,
-        'data_split': 'inference'}}, 'start_ix_to_label': {0: 'Observation::definitely present',
-                                                           3: 'Anatomy::measurement::definitely present',
-                                                           7: 'Anatomy::definitely present',
-                                                           8: 'Observation::definitely present',
-                                                           18: 'Anatomy::definitely present',
-                                                           19: 'Observation::definitely present'},
+        'data_split': 'inference'}}, 'start_ix_to_label': {"0": 'Observation::definitely present',
+                                                           "3": 'Anatomy::measurement::definitely present',
+                                                           "7": 'Anatomy::definitely present',
+                                                           "8": 'Observation::definitely present',
+                                                           "18": 'Anatomy::definitely present',
+                                                           "19": 'Observation::definitely present'},
         'radgraph_text': 'et tube terminates 2 cm above the carina retraction by several centimeters is recommended for more optimal placement bibasilar consolidations better assessed on concurrent chest ct'}
 
 
@@ -96,12 +96,12 @@ def test_3():
                       'relations': []},
                 '6': {'tokens': 'tube', 'label': 'Observation::definitely absent', 'start_ix': 14, 'end_ix': 14,
                       'relations': []}}, 'data_source': None, 'data_split': 'inference'}},
-        'start_ix_to_label': {3: 'Observation::definitely absent',
-                              4: 'Observation::definitely absent',
-                              10: 'Observation::definitely absent',
-                              11: 'Observation::definitely absent',
-                              13: 'Observation::definitely absent',
-                              14: 'Observation::definitely absent'},
+        'start_ix_to_label': {"3": 'Observation::definitely absent',
+                              "4": 'Observation::definitely absent',
+                              "10": 'Observation::definitely absent',
+                              "11": 'Observation::definitely absent',
+                              "13": 'Observation::definitely absent',
+                              "14": 'Observation::definitely absent'},
         'radgraph_text': 'there is no significant change since the previous exam the feeding tube and nasogastric tube have been removed'}
 
 
@@ -128,9 +128,9 @@ def test_4():
                   'relations': [['located_at', '3']]},
             '5': {'tokens': 'pneumonia', 'label': 'Observation::definitely absent', 'start_ix': 7, 'end_ix': 7,
                   'relations': []}}, 'data_source': None, 'data_split': 'inference'}},
-                                     'start_ix_to_label': {0: 'Observation::definitely present',
-                                                           1: 'Observation::definitely present',
-                                                           2: 'Anatomy::definitely present',
-                                                           3: 'Observation::definitely present',
-                                                           7: 'Observation::definitely absent'},
+                                     'start_ix_to_label': {"0": 'Observation::definitely present',
+                                                           "1": 'Observation::definitely present',
+                                                           "2": 'Anatomy::definitely present',
+                                                           "3": 'Observation::definitely present',
+                                                           "7": 'Observation::definitely absent'},
                                      'radgraph_text': 'unchanged mild pulmonary edema no radiographic evidence pneumonia'}

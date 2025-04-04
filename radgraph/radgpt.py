@@ -55,10 +55,14 @@ def get_radgraph_processed_annotations(radgraph_annotations):
     anat_modify_anat = defaultdict(list)
     all_observations = []
 
+    # Updated tags dictionary to handle measurement variations
     tags_name = {
         "Observation::uncertain": 'uncertain',
         "Observation::definitely present": 'definitely present',
         "Observation::definitely absent": 'definitely absent',
+        "Observation::measurement::definitely present": 'definitely present',
+        "Observation::measurement::definitely absent": 'definitely absent',
+        "Observation::measurement::uncertain": 'uncertain',
     }
 
     # First loop over all entities
@@ -133,18 +137,17 @@ def get_radgraph_processed_annotations(radgraph_annotations):
         record["observation_start_ix"] = modifiers_start_ix
         record["observation_end_ix"] = modifiers_end_ix
 
-        # We prepend "uncertain" or "no" to the full observation if the obs or modifiers contain the corresponding label
-        # This is working well.
-        if "Observation::definitely absent" in modifiers_labels:
-            # record["observation"] = "no " + record["observation"]
+        # Check for definitely absent label (including measurement variants)
+        if any(label in modifiers_labels for label in ["Observation::definitely absent", "Observation::measurement::definitely absent"]):
             record["observation"] = record["observation"]
-            tag = tags_name["Observation::definitely absent"]
-        elif "Observation::uncertain" in modifiers_labels:
-            # record["observation"] = "possible " + record["observation"]
+            tag = "definitely absent"
+        # Check for uncertain label (including measurement variants)
+        elif any(label in modifiers_labels for label in ["Observation::uncertain", "Observation::measurement::uncertain"]):
             record["observation"] = record["observation"]
-            tag = tags_name["Observation::uncertain"]
+            tag = "uncertain"
+        # Default to definitely present (including measurement variants)
         else:
-            tag = tags_name["Observation::definitely present"]
+            tag = "definitely present"
 
         # Tag
         record["tags"] = [tag]
@@ -169,20 +172,26 @@ def get_radgraph_processed_annotations(radgraph_annotations):
                 modifiers_start_ix = sorted(modifiers_start_ix)
                 modifiers_end_ix = sorted(modifiers_end_ix)
 
-                # if len(modifiers_tokens.split(" ")) > 1:
-                #     modifiers_tokens = correct_modifier_order(modifiers_tokens)
-
                 located_at.append(modifiers_tokens.lower().strip("\n .\"'"))
                 located_at_start_ix.append(modifiers_start_ix)
                 located_at_end_ix.append(modifiers_end_ix)
 
-            # List of "located at" anat for current observation, filtering duplicates
-            # record["located_at"] = [x for i, x in enumerate(located_at) if x not in located_at[:i]]
-            # record["located_at_start_ix"] = [x for i, x in enumerate(located_at_start_ix) if
-            #                                  x not in located_at_start_ix[:i]]
-
-            record["located_at"] = located_at
-            record["located_at_start_ix"] = located_at_start_ix
+            # Filter out any entries that are substrings of other entries
+            filtered_entries = []
+            filtered_start_ix = []
+            
+            for i, item in enumerate(located_at):
+                is_substring = False
+                for j, other_item in enumerate(located_at):
+                    if i != j and item in other_item and set(item.split()).issubset(set(other_item.split())):
+                        is_substring = True
+                        break
+                if not is_substring:
+                    filtered_entries.append(item)
+                    filtered_start_ix.append(located_at_start_ix[i])
+            
+            record["located_at"] = filtered_entries
+            record["located_at_start_ix"] = filtered_start_ix
 
         # Suggestive of
         if observation_index in obs_suggest_obs:
@@ -190,12 +199,23 @@ def get_radgraph_processed_annotations(radgraph_annotations):
             suggestive_of_records = []
             for target in targets:
                 suggestive_of_records.append(tokens + " suggestive of " + annotations[target]["tokens"])
-
-            record["suggestive_of"] = suggestive_of_records
+            
+            # Filter out any entries that are substrings of other entries
+            filtered_suggestive = []
+            for i, item in enumerate(suggestive_of_records):
+                is_substring = False
+                for j, other_item in enumerate(suggestive_of_records):
+                    if i != j and item in other_item and set(item.split()).issubset(set(other_item.split())):
+                        is_substring = True
+                        break
+                if not is_substring:
+                    filtered_suggestive.append(item)
+            
+            record["suggestive_of"] = filtered_suggestive
 
         processed_observations.append(record)
 
-    start_ix_to_label = {v["start_ix"]: v["label"] for v in radgraph_annotations["0"]["entities"].values()}
+    start_ix_to_label = {str(v["start_ix"]): v["label"] for v in radgraph_annotations["0"]["entities"].values()}
 
     return {"processed_annotations": processed_observations,
             "radgraph_annotations": radgraph_annotations,
