@@ -7,7 +7,6 @@ from radgraph.allennlp.common.util import JsonDict
 from radgraph.allennlp.data import Instance
 from radgraph.allennlp.predictors.predictor import Predictor
 from radgraph.allennlp.data.fields import LabelField
-from radgraph.allennlp.data.tokenizers.spacy_tokenizer import SpacyTokenizer
 
 
 @Predictor.register("text_classifier")

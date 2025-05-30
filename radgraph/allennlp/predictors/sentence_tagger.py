@@ -6,7 +6,6 @@ import numpy
 from radgraph.allennlp.common.util import JsonDict
 from radgraph.allennlp.data import DatasetReader, Instance
 from radgraph.allennlp.data.fields import FlagField, TextField, SequenceLabelField
-from radgraph.allennlp.data.tokenizers.spacy_tokenizer import SpacyTokenizer
 from radgraph.allennlp.models import Model
 from radgraph.allennlp.predictors.predictor import Predictor
 
