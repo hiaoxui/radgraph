@@ -5,13 +5,12 @@ Requirements:
 python_requires='>=3.8,<3.11
 
 ```
-'torch==2.3'
-'transformers==4.39.0'
+'torch<=2.7.0'
+'transformers'
 "appdirs"
 'jsonpickle'
 'filelock'
 'h5py'
-'spacy'
 'nltk'
 'pytest'
 ```
