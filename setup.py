@@ -22,7 +22,6 @@ setup(
         "jsonpickle",
         "filelock",
         "h5py",
-        "spacy",
         "nltk",
         "dotmap",
         "pytest",
