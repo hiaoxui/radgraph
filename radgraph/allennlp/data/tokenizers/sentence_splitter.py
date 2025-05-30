@@ -1,8 +1,6 @@
 from typing import List
 from overrides_ import overrides
 
-import spacy
-
 from radgraph.allennlp.common import Registrable
 from radgraph.allennlp.common.util import get_spacy_model
 

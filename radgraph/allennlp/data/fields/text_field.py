@@ -8,7 +8,6 @@ from typing import Dict, List, Optional, Iterator
 import textwrap
 
 from overrides_ import overrides
-from spacy.tokens import Token as SpacyToken
 import torch
 
 from radgraph.allennlp.common.checks import ConfigurationError
@@ -49,7 +48,7 @@ class TextField(SequenceField[TextFieldTensors]):
         self._token_indexers = token_indexers
         self._indexed_tokens: Optional[Dict[str, IndexedTokenList]] = None
 
-        if not all(isinstance(x, (Token, SpacyToken)) for x in tokens):
+        if not all(isinstance(x, (Token,)) for x in tokens):
             raise ConfigurationError(
                 "TextFields must be passed Tokens. "
                 "Found: {} with types {}.".format(tokens, [type(x) for x in tokens])

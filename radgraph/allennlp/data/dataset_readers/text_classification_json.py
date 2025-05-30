@@ -7,7 +7,7 @@ from radgraph.allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from radgraph.allennlp.data.fields import LabelField, TextField, Field, ListField
 from radgraph.allennlp.data.instance import Instance
 from radgraph.allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
-from radgraph.allennlp.data.tokenizers import Tokenizer, SpacyTokenizer
+from radgraph.allennlp.data.tokenizers import Tokenizer
 from radgraph.allennlp.data.tokenizers.sentence_splitter import SpacySentenceSplitter
 
 logger = logging.getLogger(__name__)
