@@ -15,3 +15,4 @@ if __name__ == "__main__":
     rewards = server.compute_rewards(hyps, refs)
     for i, reward in enumerate(rewards):
         print(f"Pair {i+1} Rewards: {reward}")
+    x = 1

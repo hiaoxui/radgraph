@@ -2,7 +2,7 @@ RadGraph
 =========
 Requirements:
 
-python_requires='>=3.8,<3.11
+python_requires='>=3.8'
 
 ```
 'torch<=2.7.0'

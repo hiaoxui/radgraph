@@ -7,7 +7,6 @@ from copy import deepcopy
 from typing import Dict, List, Optional, Iterator
 import textwrap
 
-from overrides_ import overrides
 import torch
 
 from radgraph.allennlp.common.checks import ConfigurationError
@@ -54,19 +53,16 @@ class TextField(SequenceField[TextFieldTensors]):
                 "Found: {} with types {}.".format(tokens, [type(x) for x in tokens])
             )
 
-    @overrides
     def count_vocab_items(self, counter: Dict[str, Dict[str, int]]):
         for indexer in self._token_indexers.values():
             for token in self.tokens:
                 indexer.count_vocab_items(token, counter)
 
-    @overrides
     def index(self, vocab: Vocabulary):
         self._indexed_tokens = {}
         for indexer_name, indexer in self._token_indexers.items():
             self._indexed_tokens[indexer_name] = indexer.tokens_to_indices(self.tokens, vocab)
 
-    @overrides
     def get_padding_lengths(self) -> Dict[str, int]:
         """
         The `TextField` has a list of `Tokens`, and each `Token` gets converted into arrays by
@@ -85,11 +81,9 @@ class TextField(SequenceField[TextFieldTensors]):
                 padding_lengths[f"{indexer_name}___{key}"] = length
         return padding_lengths
 
-    @overrides
     def sequence_length(self) -> int:
         return len(self.tokens)
 
-    @overrides
     def as_tensor(self, padding_lengths: Dict[str, int]) -> TextFieldTensors:
         tensors = {}
 
@@ -106,7 +100,6 @@ class TextField(SequenceField[TextFieldTensors]):
             )
         return tensors
 
-    @overrides
     def empty_field(self):
         text_field = TextField([], self._token_indexers)
         text_field._indexed_tokens = {}
@@ -114,7 +107,6 @@ class TextField(SequenceField[TextFieldTensors]):
             text_field._indexed_tokens[indexer_name] = indexer.get_empty_token_list()
         return text_field
 
-    @overrides
     def batch_tensors(self, tensor_list: List[TextFieldTensors]) -> TextFieldTensors:
         # This is creating a dict of {token_indexer_name: {token_indexer_outputs: batched_tensor}}
         # for each token indexer used to index this field.
@@ -156,7 +148,6 @@ class TextField(SequenceField[TextFieldTensors]):
     def __len__(self) -> int:
         return len(self.tokens)
 
-    @overrides
     def duplicate(self):
         """
         Overrides the behavior of `duplicate` so that `self._token_indexers` won't
