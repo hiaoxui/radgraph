@@ -2,17 +2,19 @@ RadGraph
 =========
 Requirements:
 
-python_requires='>=3.8'
-
 ```
-'torch<=2.7.0'
-'transformers'
-"appdirs"
-'jsonpickle'
-'filelock'
-'h5py'
-'nltk'
-'pytest'
+python_requires=">=3.8",
+install_requires=[
+    "torch>=2.1.0",
+    "transformers>=4.39.0",
+    "appdirs",
+    "jsonpickle",
+    "filelock",
+    "h5py",
+    "nltk",
+    "dotmap",
+    "pytest",
+],
 ```
 Testing:
 ```python
