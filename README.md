@@ -106,7 +106,6 @@ Official package as per:
 
 
 ##  F1-RadGraph
-```
 Usage:
 ```python
 from radgraph import F1RadGraph
@@ -157,8 +156,8 @@ import json
 from radgraph import get_radgraph_processed_annotations, RadGraph
 
 report = """
-Mild pulmonary edema with probable small bilateral pleural\n effusions.  
-More focal opacities at lung bases may reflect atelectasis but\n infection cannot be completely excluded.
+Mild pulmonary edema with probable small bilateral pleural effusions.  
+More focal opacities at lung bases may reflect atelectasis but infection cannot be completely excluded.
 """
 model_type = "modern-radgraph-xl"
 radgraph = RadGraph(model_type=model_type)
