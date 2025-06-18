@@ -157,11 +157,8 @@ import json
 from radgraph import get_radgraph_processed_annotations, RadGraph
 
 report = """
-A right-sided chest tube is present with the distal end near the right lung apex.  
-Right central line ends at lower SVC.  Innumerable, bilateral, nodular opacities are similar.  
-The size of the pneumothorax at the right lung apex is smaller whereas at the right lower lateral chest wall and at the right lung base is overall unchanged. 
-Spinal hardware device is present at lower thoracic and upper lumbar region. Increase retrocardiac density representing left lower lung volume loss,
-moderate left and mild right pleural effusions are stable.
+Mild pulmonary edema with probable small bilateral pleural\n effusions.  
+More focal opacities at lung bases may reflect atelectasis but\n infection cannot be completely excluded.
 """
 model_type = "modern-radgraph-xl"
 radgraph = RadGraph(model_type=model_type)
@@ -170,8 +167,6 @@ annotations = radgraph(
     )
 
 processed_annotations = get_radgraph_processed_annotations(annotations)
-
-
 for annotation in processed_annotations["processed_annotations"]:
     located_at = f" [Location: {', '.join(annotation['located_at'])}]" if annotation["located_at"] else ""
     suggestive_of = f" [Suggestive of: {', '.join(annotation['suggestive_of'])}]" if annotation["suggestive_of"] else ""
@@ -181,15 +176,11 @@ for annotation in processed_annotations["processed_annotations"]:
 Output:
 
 ```
-Observation: tube distal end [Location: chest] [Tag: definitely present]
-Observation: central line [Location: right, lower svc] [Tag: definitely present]
-Observation: innumerable nodular opacities similar [Location: bilateral] [Tag: definitely present]
-Observation: size pneumothorax unchanged [Location: right lower lateral chest wall] [Tag: definitely present]
-Observation: smaller [Tag: definitely present]
-Observation: hardware device [Location: spinal] [Tag: definitely present]
-Observation: increase density stable [Location: retrocardiac] [Suggestive of: density suggestive of loss] [Tag: definitely present]
-Observation: loss [Location: volume] [Tag: definitely present]
-Observation: moderate mild effusions stable [Location: left right pleural] [Tag: definitely present]
+Observation: mild edema [Location: pulmonary] [Tag: definitely present]
+Observation: small effusions [Location: bilateral pleural] [Tag: uncertain]
+Observation: focal opacities [Location: lung bases] [Suggestive of: opacities suggestive of atelectasis, opacities suggestive of infection] [Tag: definitely present]
+Observation: atelectasis [Tag: uncertain]
+Observation: infection [Tag: uncertain]
 ```
 
 ##  RadGraph v1
