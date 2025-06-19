@@ -37,11 +37,11 @@ warnings.simplefilter("default", category=DeprecationWarning)
 MODEL_MAPPING = {
     "radgraph": "radgraph.tar.gz",
     "radgraph-xl": "radgraph-xl.tar.gz",
+    "modern-radgraph-xl": "modern-radgraph-xl.tar.gz",
     "echograph": "echograph.tar.gz",
 }
 
-# version = importlib.metadata.version('radgraph')
-version = "0.17.0"
+version = importlib.metadata.version('radgraph')
 CACHE_DIR = user_cache_dir("radgraph")
 CACHE_DIR = os.path.join(CACHE_DIR, version)
 
@@ -75,7 +75,7 @@ class RadGraph(nn.Module):
 
         self.model_type = model_type.lower()
 
-        assert model_type in ["radgraph", "radgraph-xl", "echograph"]
+        assert model_type in ["radgraph", "radgraph-xl", "echograph","modern-radgraph-xl"]
 
         # Handle temp_dir deprecation
         if temp_dir is not None:

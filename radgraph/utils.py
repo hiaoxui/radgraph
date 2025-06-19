@@ -88,7 +88,7 @@ def preprocess_reports(report_list, model_type):
             sen = re.sub(
                 "(?<! )(?=[/,-,:,.,!?()])|(?<=[/,-,:,.,!?()])(?! )", r" ", report
             ).split()
-        elif model_type == "radgraph-xl":
+        elif model_type == "radgraph-xl" or "modern-radgraph-xl":
             sen = radgraph_xl_preprocess_report(report).split()
         elif model_type == "echograph":
             sen = echograph_preprocess_report(report)
